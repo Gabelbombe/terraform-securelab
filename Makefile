@@ -21,7 +21,6 @@ AWS_ID?=default
 .check-region:
 	@if test "$(REGION)" = "" ; then echo "REGION not set"; exit 1; fi
 
-
 .source-dir:
 	$(call chdir, src)
 
