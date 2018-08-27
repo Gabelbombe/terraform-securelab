@@ -1,3 +1,4 @@
+/** Buh bye
 provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
@@ -41,3 +42,5 @@ resource "aws_route53_record" "test0" {
   ttl     = "300"
   records = ["${aws_instance.test.private_ip}"]
 }
+*/
+

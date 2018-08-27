@@ -22,7 +22,7 @@ AWS_ID?=default
 	@if test "$(REGION)" = "" ; then echo "REGION not set"; exit 1; fi
 
 .source-dir:
-	$(call chdir, src)
+	$(call chdir, module)
 
 
 
