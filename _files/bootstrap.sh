@@ -1,13 +1,14 @@
 #!/usr/bin/env bash -xe
 
-echo -e "[info] Setting hostname"
+echo -e '[info] Setting hostname'
 cat <<"EOF" >> /etc/hostname
 vpn0
 EOF
 hostname -F /etc/hostname
 
 
-echo -e "[info] Configuring Network"
+## See https://wiki.strongswan.org/projects/strongswan/wiki/ForwardingAndSplitTunneling
+echo -e '[info] Configuring Network'
 cat <<"EOF" >> /etc/sysctl.conf
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
@@ -19,13 +20,15 @@ iptables -t nat -A POSTROUTING -s 10.0.0.0/16 -o eth0 -m policy --dir out --pol 
 iptables -t nat -A POSTROUTING -s 10.0.0.0/16 -o eth0 -j MASQUERADE
 
 
-echo -e "[info] Installing StrongSwan"
+echo -e '[info] Installing required packages'
 DEBIAN_FRONTEND=noninteractive apt-get-y install  \
     strongswan                                    \
     strongswan-plugin-xauth-generic               \
     iptables-persistent
 
 
+
+echo -e '[info] Configuring StrongSwan'
 cat <<"EOF" > /etc/ipsec.conf
 config setup
    cachecrls=yes
@@ -43,6 +46,7 @@ conn cisco
     rightdns=10.0.0.2
     auto=add
 EOF
+
 
 cat <<"EOF" > /etc/strongswan.conf
 charon {
@@ -70,8 +74,9 @@ cat <<"EOF" > /etc/ipsec.secrets
 github : XAUTH "password"
 EOF
 
+
 ipsec rereadall
 service strongswan restart
 
 
-echo -e "[info] Completed bootstrap.."
+echo -e '[info] Completed bootstrap..'
