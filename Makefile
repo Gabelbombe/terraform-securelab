@@ -47,8 +47,8 @@ clean:
 ###############################################
 lab-plan: .source-dir .check-region
 	echo -e "\n\n\n\nlab-plan: $(date +"%Y-%m-%d @ %H:%M:%S")\n" 		\
-		>> $(LOGS_DIR)/init-lab.log
-	terraform init 2>&1 |tee $(LOGS_DIR)/init-lab.log
+		>> $(LOGS_DIR)/lab-init.log
+	terraform init 2>&1 |tee $(LOGS_DIR)/lab-init.log
 	echo -e "\n\n\n\nlab-plan: $(date +"%Y-%m-%d @ %H:%M:%S")\n" 		\
 		>> $(LOGS_DIR)/lab-plan.log
 	terraform plan 																									\
@@ -59,8 +59,8 @@ lab-plan: .source-dir .check-region
 
 lab-apply: .source-dir .check-region
 	echo -e "\n\n\n\nlab-apply: $(date +"%Y-%m-%d @ %H:%M:%S")\n" 	\
-		>> $(LOGS_DIR)/init-lab.log
-	terraform init 2>&1 |tee $(LOGS_DIR)/init-lab.log
+		>> $(LOGS_DIR)/lab-init.log
+	terraform init 2>&1 |tee $(LOGS_DIR)/lab-init.log
 	echo -e "\n\n\n\nlab-apply: $(date +"%Y-%m-%d @ %H:%M:%S")\n" 	\
 		>> $(LOGS_DIR)/lab-apply.log
 	terraform apply -auto-approve																		\
@@ -72,7 +72,7 @@ lab-apply: .source-dir .check-region
 lab-destroy: .source-dir .check-region
 	echo -e "\n\n\n\nlab-destroy: $(date +"%Y-%m-%d @ %H:%M:%S")\n" \
 		>> $(LOGS_DIR)/lab-destroy.log
-	terraform init 2>&1 |tee $(LOGS_DIR)/init-lab.log
+	terraform init 2>&1 |tee $(LOGS_DIR)/lab-init.log
 	terraform destroy 																							\
 		-auto-approve																									\
 		-state=$(STATE_DIR)/$(ACCOUNT_ID)/${REGION}-lab.tfstate 			\
