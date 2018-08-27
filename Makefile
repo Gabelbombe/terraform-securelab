@@ -1,4 +1,4 @@
-:= /bin/bash
+SHELL				:= /bin/bash
 CHDIR_SHELL := $(SHELL)
 ACCOUNT_ID  := $(shell aws sts get-caller-identity --output text --query 'Account')
 
