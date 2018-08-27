@@ -1,23 +1,23 @@
 #!/usr/bin/env bash -xe
 
 echo -e '[info] Setting hostname'
-cat <<"EOF" >> /etc/hostname
-vpn0
+cat <<EOF >> /etc/hostname
+${vpn_hostname}
 EOF
 hostname -F /etc/hostname
 
 
 ## See https://wiki.strongswan.org/projects/strongswan/wiki/ForwardingAndSplitTunneling
 echo -e '[info] Configuring Network'
-cat <<"EOF" >> /etc/sysctl.conf
+cat <<EOF >> /etc/sysctl.conf
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
 EOF
 
 
 sysctl -p
-iptables -t nat -A POSTROUTING -s 10.0.0.0/16 -o eth0 -m policy --dir out --pol ipsec -j ACCEPT
-iptables -t nat -A POSTROUTING -s 10.0.0.0/16 -o eth0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s ${vpc_cidr} -o eth0 -m policy --dir out --pol ipsec -j ACCEPT
+iptables -t nat -A POSTROUTING -s ${vpc_cidr} -o eth0 -j MASQUERADE
 
 
 echo -e '[info] Installing required packages'
@@ -29,39 +29,39 @@ DEBIAN_FRONTEND=noninteractive apt-get-y install  \
 
 
 echo -e '[info] Configuring StrongSwan'
-cat <<"EOF" > /etc/ipsec.conf
+cat <<EOF > /etc/ipsec.conf
 config setup
    cachecrls=yes
    uniqueids=never
 conn cisco
     keyexchange=ikev1
-    leftsubnet=10.0.0.0/16
+    leftsubnet=${vpc_cidr}
     xauth=server
     leftfirewall=yes
     leftauth=psk
     right=%any
     rightauth=psk
     rightauth2=xauth
-    rightsourceip=10.0.250.0/24
-    rightdns=10.0.0.2
+    rightsourceip=${vpn_rightip}
+    rightdns=${vpn_dns}
     auto=add
 EOF
 
 
-cat <<"EOF" > /etc/strongswan.conf
+cat <<EOF > /etc/strongswan.conf
 charon {
-  dns1 = 10.0.0.2
+  dns1 = ${vpn_dns}
   cisco_unity = yes
   load_modular = yes
   plugins {
     include strongswan.d/charon/*.conf
     attr {
       # INTERNAL_IP4_DNS
-      dns = 10.0.0.2
+      dns = ${vpn_dns}
       # UNITY_DEF_DOMAIN
-      28674 = seclab
+      28674 = ${vpc_domain}
       # UNITY_SPLIT_INCLUDE / split-include
-      split-include = 10.0.0.0/16
+      split-include = ${vpc_cidr}
     }
   }
 }
@@ -69,9 +69,9 @@ include strongswan.d/*.conf
 EOF
 
 
-cat <<"EOF" > /etc/ipsec.secrets
-: PSK "ABIGSECRET"
-github : XAUTH "password"
+cat <<EOF > /etc/ipsec.secrets
+: PSK "${vpn_psk}"
+${vpn_xauth_user} : XAUTH "${vpn_xauth_password}"
 EOF
 
 

@@ -7,8 +7,8 @@ define chdir
 	$(info $(MAKE): cd $(_D)) $(eval SHELL = cd $(_D); $(CHDIR_SHELL))
 endef
 
-STATE_DIR 			= ../_state
-LOGS_DIR				= ../_logs
+STATE_DIR 			= _state
+LOGS_DIR				= _logs
 
 AWS_ID?=default
 
