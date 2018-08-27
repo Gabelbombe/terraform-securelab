@@ -21,7 +21,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "test" {
-  ami                         = "${data.aws_ami.ubuntu.id}"-
+  ami                         = "${data.aws_ami.ubuntu.id}"
   instance_type               = "t2.small"
   subnet_id                   = "${aws_subnet.public.id}"
   vpc_security_group_ids      = ["${aws_security_group.vpn.id}"]

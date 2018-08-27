@@ -45,16 +45,13 @@ resource "aws_security_group" "vpn" {
 }
 
 resource "aws_instance" "vpn" {
-  ami           = "${data.aws_ami.ubuntu.id}"
-  instance_type = "t2.small"
-
+  ami                         = "${data.aws_ami.ubuntu.id}"
+  instance_type               = "${var.vpn_instance_type}"
   subnet_id                   = "${aws_subnet.public.id}"
   vpc_security_group_ids      = ["${aws_security_group.vpn.id}"]
   associate_public_ip_address = true
-
-  key_name = "${var.key_name}"
-
-  user_data = "${file("../_files/bootstrap.sh")}"
+  key_name                    = "${var.key_name}"
+  user_data                   = "${file("../_files/bootstrap.sh")}"
 
   tags {
     Name        = "vpn0-${var.name}"
