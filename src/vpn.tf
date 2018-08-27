@@ -54,7 +54,7 @@ resource "aws_instance" "vpn" {
 
   key_name = "${var.key_name}"
 
-  user_data = "${file(\"vpn_user_data.sh\")}"
+  user_data = "${file("../_files/bootstrap.sh")}"
 
   tags {
     Name        = "vpn0-${var.name}"
