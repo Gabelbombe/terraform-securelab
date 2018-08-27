@@ -72,6 +72,7 @@ lab-apply: .source-dir .check-region
 lab-destroy: .source-dir .check-region
 	echo -e "\n\n\n\nlab-destroy: $(date +"%Y-%m-%d @ %H:%M:%S")\n" \
 		>> $(LOGS_DIR)/lab-destroy.log
+	terraform init 2>&1 |tee $(LOGS_DIR)/init-lab.log
 	terraform destroy 																							\
 		-auto-approve																									\
 		-state=$(STATE_DIR)/$(ACCOUNT_ID)/${REGION}-lab.tfstate 			\
