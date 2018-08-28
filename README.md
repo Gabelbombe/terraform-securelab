@@ -13,38 +13,38 @@ DNS records inside your VPC.
 
 ### Recommended
 
--   `key_name` Name of the key_pair to use for creating a VPN instance. (so you can ssh in)
--   `name` - Name for the lab. Becomes the domainname for the VPC as well as controls Environment labels.
--   `vpn_base_ami` - AMI to use in your region. Default assumes us-east-1 and ubuntu trusty.
--   `vpn_instance_type` - Defaults to `t2.small`
+ - `key_name` Name of the key_pair to use for creating a VPN instance. (so you can ssh in)
+ - `name` - Name for the lab. Becomes the domainname for the VPC as well as controls Environment labels.
+ - `vpn_base_ami` - AMI to use in your region. Default assumes us-east-1 and ubuntu trusty.
+ - `vpn_instance_type` - Defaults to `t2.small`
 
 ### Optional
 
--   `vpn_user` - Defaults to lab name
--   `vpn_password` - Default generates a uuid
--   `vpn_sharedkey` - Default generates a uuid
--   `vpc_cidr` - Network layout for the VPC. Defaults to 10.0.0.0/16
--   `vpn_subnet` - Where to build the main subnet. Defaults to 10.0.249.0/24
+ - `vpn_user` - Defaults to lab name
+ - `vpn_password` - Default generates a uuid
+ - `vpn_sharedkey` - Default generates a uuid
+ - `vpc_cidr` - Network layout for the VPC. Defaults to 10.0.0.0/16
+ - `vpn_subnet` - Where to build the main subnet. Defaults to 10.0.249.0/24
 
 
 ## Outputs
 
 You'll likely need these to connect to your VPN:
 
--   `vpn_ip`
--   `vpn_user`
--   `vpn_password`
--   `vpn_sharedkey`
+ - `vpn_ip`
+ - `vpn_user`
+ - `vpn_password`
+ - `vpn_sharedkey`
     These will be useful for building additional resources:
--   `subnet_id`
--   `security_group_id`
--   `zone_id`
--   `domain`
+ - `subnet_id`
+ - `security_group_id`
+ - `zone_id`
+ - `domain`
     You might also use:
--   `vpc_id`
--   `vpn_instance_id`
--   `bucket_name` - S3 Bucket name to stage data.
--   `bucket_url` - S3 URL you can use to pull resources out of the bucket
+ - `vpc_id`
+ - `vpn_instance_id`
+ - `bucket_name` - S3 Bucket name to stage data.
+ - `bucket_url` - S3 URL you can use to pull resources out of the bucket
 
 
 ## Example
@@ -179,3 +179,15 @@ wget ${bucket_url}/lab.tgz        \
 
 The content you upload is of course up to you. A simple binary, a set of python
 scripts or even a full puppet manifest.
+
+
+## Recommendations
+
+ - Up security
+
+
+## References
+
+ - [Site2Site IPSEC VPN with StrongSwan]( http://blog.ruanbekker.com/blog/2018/02/11/setup-a-site-to-site-ipsec-vpn-with-strongswan-and-preshared-key-authentication/)
+ - [IPSEC VPN with Ubuntu 167.04](https://raymii.org/s/tutorials/IPSEC_vpn_with_Ubuntu_16.04.html)
+ - [StrongSwan OSX Cient](https://wiki.strongswan.org/projects/strongswan/wiki/AppleClients)
