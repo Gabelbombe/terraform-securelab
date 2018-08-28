@@ -6,6 +6,7 @@
 
 # Module directory
 */.terraform/
+.terraform/
 
 ### Go template
 # Binaries for programs and plugins

@@ -4,7 +4,7 @@ variable "secret_key" {}
 */
 
 variable "key_name" {
-  description = "Amazon EC2 Key Pair"
+  description = "Amazon EC2 key pair name to create VPN instance with"
   default     = ""
 }
 

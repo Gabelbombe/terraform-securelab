@@ -1,8 +1,9 @@
-# Terraform module to create a Secure VPC Laboratory and simple Bastion/VPN Host
+# A Terraform module for creating a VPC Laboratory allowing you to connect to your lab network using a IPSec VPN.
 
 This is useful for quickly and securely building a development infrastructure
 in AWS. It integrates with private Route53 so you'll get a complete domain and
 DNS records inside your VPC.
+
 
 ## Input Variables
 
@@ -25,6 +26,7 @@ DNS records inside your VPC.
 -   `vpc_cidr` - Network layout for the VPC. Defaults to 10.0.0.0/16
 -   `vpn_subnet` - Where to build the main subnet. Defaults to 10.0.249.0/24
 
+
 ## Outputs
 
 You'll likely need these to connect to your VPN:
@@ -41,6 +43,9 @@ You'll likely need these to connect to your VPN:
     You might also use:
 -   `vpc_id`
 -   `vpn_instance_id`
+-   `bucket_name` - S3 Bucket name to stage data.
+-   `bucket_url` - S3 URL you can use to pull resources out of the bucket
+
 
 ## Example
 
@@ -115,3 +120,62 @@ PING test.lab (10.0.249.113): 56 data bytes
 64 bytes from 10.0.249.113: icmp_seq=0 ttl=64 time=71.382 ms
 ...
 ```
+
+
+## Uploading Data
+While Terraform has `provisioners` such as file upload or script execution, you
+can't really easily use them here because you'd have to be connected to your
+VPN to connect to your hosts.
+
+Doing all your provisioning with just bootstrap scripts can also work, but you're limited to 16Kb.
+
+To get around these limitations, the securelab module will (helpfully) configured an S3 bucket your instances inside the VPC can access.
+
+You can define resources that should exist in your bucket:
+
+```hcl
+resource "aws_s3_bucket_object" "lab_provision" {
+  bucket = "${module.vpc_lab.bucket_name}"
+  key    = "lab.tgz"
+  source = "build/lab.tgz"
+}
+```
+
+To effectively use, you should add this to your instance:
+
+```hcl
+depends_on = ["aws_s3_bucket_object.lab_provision"]
+```
+
+Then you can templatize your bootstrap script such as:
+```hcl
+resource "template_file" "test_bootstrap" {
+  count    = 1
+  template = "${file("_file/bootstrap.tmpl.sh")}"
+
+  vars {
+    hostname   = "test${count.index}"
+    bucket_url = "${module.vpc_lab.bucket_url}"
+  }
+}
+```
+And your `bootstrap.tmpl.sh`
+
+```bash
+#!/usr/bin/env bash -xe
+
+echo -e '[info] Setting hostname'
+cat <<EOF >> /etc/hostname
+${vpn_hostname}
+EOF
+hostname -F /etc/hostname
+
+cd /tmp
+wget ${bucket_url}/lab.tgz        \
+&& tar --no-same-owner -xzf lab.tgz
+
+./provision.sh
+```
+
+The content you upload is of course up to you. A simple binary, a set of python
+scripts or even a full puppet manifest.
