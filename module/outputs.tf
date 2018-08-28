@@ -10,6 +10,14 @@ output "subnet_id" {
   value = "${aws_subnet.public.id}"
 }
 
+output "subnet_cidr" {
+  value = "${aws_subnet.public.cidr_block}"
+}
+
+output "subnet_az" {
+  value = "${aws_subnet.public.availability_zone}"
+}
+
 output "security_group_id" {
   value = "${aws_security_group.main.id}"
 }
@@ -35,13 +43,13 @@ output "vpn_ip" {
 }
 
 output "vpn_sharedkey" {
-  value = "${template_file.vpn_user_data.vars.vpn_psk}"
+  value = "${data.template_file.bootstrap.vars.vpn_psk}"
 }
 
 output "vpn_user" {
-  value = "${template_file.vpn_user_data.vars.vpn_xauth_user}"
+  value = "${data.template_file.bootstrap.vars.vpn_xauth_user}"
 }
 
 output "vpn_password" {
-  value = "${template_file.vpn_user_data.vars.vpn_xauth_password}"
+  value = "${data.template_file.bootstrap.vars.vpn_xauth_password}"
 }
