@@ -1,6 +1,6 @@
 # A Terraform module for creating a VPC Laboratory allowing you to connect to your lab network using a IPSec VPN.
 
-![Mad Duck is mad...](../assets/mad-duck.jpg "StrongSwan is no match for mad duck, lets be honest....")
+![Mad Duck is mad...](assets/mad-duck.jpg "StrongSwan is no match for mad duck, lets be honest....")
 
 This is useful for quickly and securely building a development infrastructure
 in AWS. It integrates with private Route53 so you'll get a complete domain and
