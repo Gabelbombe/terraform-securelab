@@ -43,21 +43,21 @@ conn cisco
     rightauth=psk
     rightauth2=xauth
     rightsourceip=${vpn_rightip}
-    rightdns=${vpn_dns}
+    rightdns=${vpc_dns}
     auto=add
 EOF
 
 
 cat <<EOF > /etc/strongswan.conf
 charon {
-  dns1 = ${vpn_dns}
+  dns1 = ${vpc_dns}
   cisco_unity = yes
   load_modular = yes
   plugins {
     include strongswan.d/charon/*.conf
     attr {
       # INTERNAL_IP4_DNS
-      dns = ${vpn_dns}
+      dns = ${vpc_dns}
       # UNITY_DEF_DOMAIN
       28674 = ${vpc_domain}
       # UNITY_SPLIT_INCLUDE / split-include
