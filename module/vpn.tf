@@ -113,13 +113,3 @@ resource "aws_route53_record" "vpn0" {
     ignore_changes = ["records.#"]
   }
 }
-
-resource "template_file" "test_user_data" {
-  count    = 1
-  template = "${file("bootstrap.tmpl.sh")}"
-
-  vars {
-    hostname   = "test${count.index}"
-    bucket_url = "${module.vpc_lab.bucket_url}"
-  }
-}
