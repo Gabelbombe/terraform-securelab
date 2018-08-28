@@ -4,10 +4,6 @@ provider "aws" {
   region     = "${var.region}"
 }
 
-module "secure_lab" {
-  source = "git@github.com:ehime/terraform-securelab//vpn"
-}
-
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -22,6 +18,11 @@ data "aws_ami" "ubuntu" {
   }
 
   owners = ["099720109477"] # Canonical
+}
+
+## Module settings
+module "secure_lab" {
+  source = "git@github.com:ehime/terraform-securelab//vpn"
 }
 
 resource "aws_instance" "test" {

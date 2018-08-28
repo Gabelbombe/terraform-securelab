@@ -1,5 +1,7 @@
 # A Terraform module for creating a VPC Laboratory allowing you to connect to your lab network using a IPSec VPN.
 
+![Mad Duck is mad...](../assets/mad-duck.jpg "StrongSwan is no match for mad duck, lets be honest....")
+
 This is useful for quickly and securely building a development infrastructure
 in AWS. It integrates with private Route53 so you'll get a complete domain and
 DNS records inside your VPC.
@@ -190,4 +192,5 @@ scripts or even a full puppet manifest.
 
  - [Site2Site IPSEC VPN with StrongSwan]( http://blog.ruanbekker.com/blog/2018/02/11/setup-a-site-to-site-ipsec-vpn-with-strongswan-and-preshared-key-authentication/)
  - [IPSEC VPN with Ubuntu 167.04](https://raymii.org/s/tutorials/IPSEC_vpn_with_Ubuntu_16.04.html)
+ - [](https://www.cakesolutions.net/teamblogs/connecting-aws-virtual-private-clouds-using-vpn-strongswan)
  - [StrongSwan OSX Cient](https://wiki.strongswan.org/projects/strongswan/wiki/AppleClients)
