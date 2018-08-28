@@ -1,23 +1,32 @@
-/** Buh bye
-variable "access_key" {}
-variable "secret_key" {}
-*/
-
 variable "key_name" {
-  description = "Amazon EC2 key pair name to create VPN instance with"
+  description = "Key pair name to create VPN instance with"
   default     = ""
 }
 
 variable "name" {
-  default = "test"
+  default = "lab"
+}
+
+variable "lab_bucket_name" {
+  description = "S3 bucket name"
+  default     = ""
 }
 
 variable "vpc_cidr" {
   default = "10.0.0.0/16"
 }
 
+variable "vpn_base_ami" {
+  default = "ami-c80b0aa2"
+}
+
 variable "vpn_instance_type" {
   default = "t2.small"
+}
+
+variable "vpn_psk" {
+  description = "Pre-Shared Key for VPN"
+  default     = ""
 }
 
 variable "vpn_subnet" {
@@ -27,11 +36,6 @@ variable "vpn_subnet" {
 
 variable "vpn_user" {
   description = "VPN User"
-  default     = ""
-}
-
-variable "vpn_psk" {
-  description = "Pre-Shared Key for VPN"
   default     = ""
 }
 
